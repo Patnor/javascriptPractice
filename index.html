@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>Contacts Example</title>
+        
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+
+    <body>
+        <main id="main">
+            <h1>Contacts</h1>
+            <table id="contact-list-table" summary="Contacts">
+                <thead>
+                    <tr>
+                        <th id="table-header-first-name">First Name</th>
+                        <th id="table-header-last-name">Last Name</th>
+                        <th id="table-header-email">E-mail Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="row odd">
+                        <td>John</td>
+                        <td>Doe</td>
+                        <td>john.doe@javascripthandbuch.de</td>
+                    </tr>
+                    <tr class="row even">
+                        <td>James</td>
+                        <td>Doe</td>
+                        <td>james.doe@javascripthandbuch.de</td>
+                    </tr>
+                    <tr class="row odd">
+                        <td>Peter</td>
+                        <td>Doe</td>
+                        <td>peter.doe@javascripthandbuch.de</td>
+                    </tr>
+                    <tr class="row even">
+                        <td>Paul</td>
+                        <td>Doe</td>
+                        <td>paul.doe@javascripthandbuch.de</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <br>
+            <div>
+                <form action="">
+                    <label for="artist">Artist</label>
+                    <input id="artist" type="text" name="artist">
+                    <br>
+                    <label for="album">Album</label>
+                    <input id="album" type="text" name="album">
+                    <br>
+                    <p>Genre:</p>
+                    <fieldset>
+                        <input type="radio" id="st" name="genre" value="Stonerock">
+                        <label for="st">Stonerock</label>
+                        <br>
+                        <input type="radio" id="sp" name="genre" value="Spacerock">
+                        <label for="sp">Spacerock</label>
+                        <br>
+                        <input type="radio" id="ha" name="genre" value="Hardrock">
+                        <label for="ha">Hardrock</label>
+                    </fieldset>
+
+                </form>
+            </div>
+            <div>
+                <ul id="news">
+                    <li>
+                        <strong>Record news: </strong>New album by <em>Ben Harper</em> released.
+                    </li>
+                </ul>
+            </div>
+        </main>
+        <script src="scripts/script.js"></script>
+    </body>
+</html>

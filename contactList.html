@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>Contact List</title>
+        <style rel="stylesheet" href="css/contact.css"></style>
+    </head>
+    <body onload="createTable()">
+        <main id="main-content">
+            <h1>Constact</h1>
+            <button onclick="sortByFirstName()">sort</button>
+            <table id="contact-tb" summary="Contacts">
+                <thead>
+                    <tr>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>E-mail address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+
+            <p>
+                <a id="home" class="link" href="contactList.html">Home</a>
+            </p>
+            <button id="create" class="link" style="background-color: green" onclick="createContact()">Create Contact</button>
+        </main>
+        <script src="scripts/contactsScript.js"></script>
+    </body>
+</html>
