@@ -1,9 +1,9 @@
 
-.available{
+.open{
     background-color: white;
 }
 
-.unavailable{
+.closed{
     background-color: lightgrey;
 }
 
@@ -16,6 +16,7 @@
     border: 0px;
     border-color: white;
     font-size: large;
+    font-weight: bolder;
   
 }
 
