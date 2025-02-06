@@ -1,0 +1,43 @@
+
+.available{
+    background-color: white;
+}
+
+.unavailable{
+    background-color: lightgrey;
+}
+
+.taken{
+    background-color: lightgreen;
+}
+
+.quarter{
+    background-color: white;
+    border: 0px;
+    border-color: white;
+    font-size: x-large;
+  
+}
+
+table{
+    border-collapse: collapse;
+    width: fit-content;
+    border: 0px;
+    border-color: white;
+}
+
+th{
+    background-color: lightskyblue;
+}
+
+td, th{
+    border: 1px solid gray;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-bottom: 8px;
+    padding-top: 8px;
+}
+
+.quarter tr, .quarter td{
+    padding-left: 8px;
+}
