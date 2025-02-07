@@ -9,7 +9,10 @@
  * https://youtu.be/2sQ9xiEAXNo?si=8ks_O2bISIXrC4wY
  */
 
-// this function runs when the page is loaded.
+/**
+ *  this function creates the table of courses when the page is loaded.
+ *  All table rows start greyed out
+ */ 
 function init(){
     const startButton = document.getElementById('btn_start');
     startButton.addEventListener('click', start, false);
@@ -33,7 +36,7 @@ function init(){
                 else return 0;
             });
             //console.log(result.length);
-            const tBody = document.getElementById("tbl_courses");
+            const tBody = document.getElementById("tbl_body");
             
             // result.sort((val1, val2) => {
             //     if(val1.name < val2.name) return -1;
@@ -56,6 +59,9 @@ function init(){
                    // my thinking here is that I sort the results once
                    // then iterate through the array just once for O(n) time 
                    // complexity.
+                   // IDEA: make each quarter a table and use a switch to add
+                   // table rows to the appropriate table. This senerio would 
+                   // require just 1 iteration through the array. No need to sort
                 if(currentQuarter != result[i].quarter){
                     const trq = document.createElement('tr');
                     const tdq = document.createElement('td');
@@ -74,14 +80,22 @@ function init(){
                 tr.className = 'closed';
                 tr.id = result[i].id;
 
-                console.log("not stringified: " + result[i].prerequisites);
-                console.log("stringified: " + JSON.stringify(result[i].prerequisites));
+                // pg. 524 - json
+                // console.log("not stringified: " + result[i].prerequisites);             //CSD 111,CSD 112
+                // console.log("stringified: " + JSON.stringify(result[i].prerequisites)); //["CSD 111","CSD 112"]
                 
-                tr.dataset.prerequisites = JSON.stringify(result[i].prerequisites);
+                //tr.dataset.prerequisites = JSON.stringify(result[i].prerequisites);
+                tr.dataset.prerequisites = result[i].prerequisites;
+                tr.dataset.requiredBy = result[i].required_by;
+                tr.dataset.corequisites = result[i].corequisites;
+
                 // pg 417
                 // author suggests this is a better way to add event handler
                 // it completely separates code from the HTML.
-                tr.addEventListener('click', clicked);
+                tr.addEventListener('click', function(e) {
+                    //console.log(e.currentTarget.id)
+                    clicked(e);
+                });
                 tBody.appendChild(tr);
             }
     
@@ -91,6 +105,10 @@ function init(){
         });
 }
 
+/**
+ * This function sets the background color for the classes that don't require
+ * a prerequisite and allows the user to select one.
+ */
 function start(){
     // I need to traverse the table and any tr without prerequisites will be 
     // turned white.
@@ -108,9 +126,37 @@ function start(){
     }
 }
 
-function clicked(){
-    alert("Clicked");
+function clicked(event){
+    // console.log(event);
+    // console.log( event.target.id);
+    // console.log( event.currentTarget.id);
+    
+    const tr = document.getElementById(event.currentTarget.id);
+    // console.log(tr);
+
+    if(tr.className != 'closed'){
+        if(tr.className == 'open'){
+            tr.className = 'taken';
+                let courses = tr.dataset.requiredBy.split(',');
+                //let a = array.split(',');
+                console.log(courses);
+                if( courses[0] == "")  // i think this is kind of ugly
+                    return;
+                // open of courses    
+                courses.forEach(element => {
+                    const row = document.getElementById(element);
+                    row.className = 'open';
+                });
+           
+        } else { // class has been taken and now must be reversed.
+            // TODO: implement closing required_by;
+        }
+    }
+    else 
+        console.log(tr.className);
 }
 
 // pg. 418
+// this will add an event listener that will trigger when the dom in completely
+// loaded
 document.addEventListener('DOMContentLoaded',init);
