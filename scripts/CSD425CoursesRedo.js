@@ -14,18 +14,25 @@
  *  All table rows start greyed out
  */ 
 function init(){
+    const connectionStr = "https://gq36rkqx07.execute-api.us-east-1.amazonaws.com/DocDbStage/"
+    
     const startButton = document.getElementById('btn_start');
     startButton.addEventListener('click', start, false);
     // pg 550 fetch info
-    const data = fetch('../data/CSD425Courses.json')
+    const data = fetch(connectionStr) 
         .then((response) => {
-            console.log(response.status);
-            console.log(response.bodyUsed);
+            // console.log(typeof(response));
+            // console.log(response);
+            // console.log(response.status);
+            // console.log(response.bodyUsed);
 
             return response.json();
         })
         .then(result => {
-
+            // had to parse once I connect to the documentDB
+            result = JSON.parse(result.body);
+            console.log(result);
+            console.log(typeof(result));
             // pg 285
             // this is to ensure the quarters are in order
             result.sort((val1, val2) => {
