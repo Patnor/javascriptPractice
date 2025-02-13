@@ -14,9 +14,20 @@
  *  All table rows start greyed out
  */ 
 function init(){
-    const connectionStr = "https://gq36rkqx07.execute-api.us-east-1.amazonaws.com/DocDbStage/"
+    // from docDB through lambda
+    const connectionStr = "https://gq36rkqx07.execute-api.us-east-1.amazonaws.com/DocDbStage/";
+
+    // from lambda
+    //const connectionStr = ('https://vo239v3ve2.execute-api.us-east-1.amazonaws.com/Dev');
+
+    // from local json
+    //const connectionStr = "../data/CSD425Courses.json";
     
     const startButton = document.getElementById('btn_start');
+
+    // pg 417
+    // author suggests this is a better way to add event handler
+    // it completely separates code from the HTML.
     startButton.addEventListener('click', start, false);
     // pg 550 fetch info
     const data = fetch(connectionStr) 
@@ -96,9 +107,7 @@ function init(){
                 tr.dataset.requiredBy = result[i].required_by;
                 tr.dataset.corequisites = result[i].corequisites;
 
-                // pg 417
-                // author suggests this is a better way to add event handler
-                // it completely separates code from the HTML.
+                
                 tr.addEventListener('click', function(e) {
                     //console.log(e.currentTarget.id)
                     clicked(e);
@@ -157,11 +166,32 @@ function clicked(event){
            
         } else { // class has been taken and now must be reversed.
             // TODO: implement closing required_by;
+            tr.className = "open";
+            reverseOpenCourses(tr.dataset.requiredBy);
         }
     }
     else 
         console.log(tr.className);
 }
+
+function reverseOpenCourses(requiredBy){
+    console.log(requiredBy);
+    let courses = requiredBy.split(',');
+
+
+    if( courses == ""){
+        return;
+    }
+
+    courses.forEach(id => {
+        const course = document.getElementById(id);
+
+        course.className = "closed";
+
+        reverseOpenCourses(course.dataset.requiredBy);
+    });
+    
+}   
 
 // pg. 418
 // this will add an event listener that will trigger when the dom in completely
