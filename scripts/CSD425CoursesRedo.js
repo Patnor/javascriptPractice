@@ -42,8 +42,15 @@ function init(){
         .then(result => {
             // had to parse once I connect to the documentDB
             result = JSON.parse(result.body);
+
+            // resultString = JSON.stringify(result.body);
+            // resultNeither = result.body;
+
+            
             console.log(result);
-            console.log(typeof(result));
+            // console.log(resultString);
+            // console.log(resultNeither);
+            // console.log(typeof(result));
             // pg 285
             // this is to ensure the quarters are in order
             result.sort((val1, val2) => {
@@ -105,7 +112,7 @@ function init(){
                 //tr.dataset.prerequisites = JSON.stringify(result[i].prerequisites);
                 tr.dataset.prerequisites = result[i].prerequisites;
                 tr.dataset.requiredBy = result[i].required_by;
-                tr.dataset.corequisites = result[i].corequisites;
+               // tr.dataset.corequisites = result[i].corequisites;
 
                 
                 tr.addEventListener('click', function(e) {
@@ -134,6 +141,10 @@ function start(){
        // console.log(rows[i].className);
 
         if(rows[i].className != 'quarter'){
+            // I added this line to reset the page it the start button is pressed
+            // again
+            rows[i].className = "closed";
+
             const prerequisites = rows[i].dataset.prerequisites;
             if (!prerequisites || prerequisites === '[]') {            
                 rows[i].className = 'open';
@@ -142,6 +153,16 @@ function start(){
     }
 }
 
+/**
+ * This function takes the element that was selected if open will change the 
+ * background to lightgreen indicating that the class was taken. I will check for
+ * other classes that has the selected class as a prerequisite and will open the 
+ * class by turning the background white. If the class has been taken, it will
+ * turn the background white and any classes that were open and has the selected 
+ * class as a prerequisite will close and turn grey.
+ * @param {} event 
+ * @returns 
+ */
 function clicked(event){
     // console.log(event);
     // console.log( event.target.id);
@@ -153,31 +174,51 @@ function clicked(event){
     if(tr.className != 'closed'){
         if(tr.className == 'open'){
             tr.className = 'taken';
-                let courses = tr.dataset.requiredBy.split(',');
+
+                const courses = tr.dataset.requiredBy.split(',');
                 //let a = array.split(',');
-                console.log(courses);
+               // console.log("courses = " + courses);
                 if( courses[0] == "")  // i think this is kind of ugly
                     return;
                 // open of courses    
-                courses.forEach(element => {
-                    const row = document.getElementById(element);
-                    row.className = 'open';
-                });
-           
-        } else { // class has been taken and now must be reversed.
+                courses.forEach(id => {
+                    const row = document.getElementById(id);
+                   // console.log("Id: " + id);
+                    // check if all prereqs are taken
+                    const prereqs = row.dataset.prerequisites.split(',');
+                    //console.log(prereqs);
+                    let bAllOpen = true;              
+
+                    prereqs.forEach(id => {
+                        const preR = document.getElementById(id);
+                        //console.log(id + " " + id.className);
+                        if(preR.className != "taken")
+                            bAllOpen = false;
+                    });
+                    if(bAllOpen)
+                        row.className = 'open';
+                });           
+        } else { 
+            // class has been taken and now must be reversed.
             // TODO: implement closing required_by;
             tr.className = "open";
             reverseOpenCourses(tr.dataset.requiredBy);
         }
     }
     else 
-        console.log(tr.className);
+       console.log(tr.className);
 }
 
+/**
+ * This function closes courses that were opened when a course that has be previously
+ * marked as taken is marked not taken. It recursively closes all courses that had
+ * the course deselected as a prerequisite.
+ * @param {} requiredBy  // classes that require this class
+ * @returns 
+ */
 function reverseOpenCourses(requiredBy){
-    console.log(requiredBy);
-    let courses = requiredBy.split(',');
-
+    //console.log(requiredBy);
+    const courses = requiredBy.split(',');
 
     if( courses == ""){
         return;
@@ -189,8 +230,7 @@ function reverseOpenCourses(requiredBy){
         course.className = "closed";
 
         reverseOpenCourses(course.dataset.requiredBy);
-    });
-    
+    });  
 }   
 
 // pg. 418
